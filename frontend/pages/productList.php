@@ -56,77 +56,109 @@ foreach ($soldQuantities as $sold) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Lista de Productos | Julio Iturraspe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <style>
+        .main-layout { display: flex; min-height: 100vh; }
+        .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
+        .table-card { background: white; border-radius: 1rem; padding: 2rem; border: none; box-shadow: var(--shadow-soft); }
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.4rem 0.8rem; margin-left: 0.5rem;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #e2e8f0; border-radius: 0.4rem; padding: 0.2rem;
+        }
+        table.dataTable { border-collapse: separate !important; border-spacing: 0 0.5rem !important; }
+        table.dataTable tbody tr { background-color: #fff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 0.5rem; }
+        table.dataTable tbody td { border: none !important; padding: 1rem !important; vertical-align: middle !important; }
+        table.dataTable thead th { border-bottom: 2px solid #f1f5f9 !important; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        .badge-stock { padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.75rem; }
+        @media (max-width: 992px) { .content-area { margin-left: 0; } }
+    </style>
 </head>
-<body>
+<body class="bg-main">
+    <div class="main-layout">
+        <?php include_once '../components/Sidebar.php'; ?>
+        
+        <div class="content-area">
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="font-weight: 700; color: var(--text-main); margin: 0;">Lista de Productos</h2>
+                    <div class="d-flex gap-2">
+                        <button id="downloadPdf" class="modern-btn modern-btn-primary" style="background: #ef4444; width: auto; font-size: 0.875rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+                            Imprimir PDF
+                        </button>
+                    </div>
+                </div>
 
-    <?php include_once '../components/navbar.php'; ?>
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger" style="border-radius: 0.75rem; border: none; background: #fef2f2; color: #991b1b;"><?php echo $error; ?></div>
+                <?php endif; ?>
 
-    <div class="rounded-container-table">
-        <h4 class="text-center pb-4">Lista de Productos</h4>
+                <div class="alert alert-info d-flex align-items-center" style="border-radius: 0.75rem; border: none; background: #eff6ff; color: #1e40af;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    <strong>Valor total del Stock (Costo):</strong>&nbsp; $<?php echo number_format($totalStockValue, 2); ?>
+                </div>
 
-        <!-- Mensajes de éxito o error -->
-        <?php if (isset($error)): ?>
-            <div class="alert alert-danger text-center"><?php echo $error; ?></div>
-        <?php endif; ?>
-        <!-- Botón para descargar PDF -->
-<div class="text-right">
-    <button id="downloadPdf" class="btn btn-danger btn-sm">imprimir en PDF</button>
-</div><br>
-<div class="alert alert-info text-left">
-    <strong>Valor total del Stock segun Costo:</strong> $<?php echo number_format($totalStockValue, 2); ?>
-</div>
+                <div class="row items-center mb-4 mt-4">
+                    <div class="col-md-4">
+                        <label style="font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem;">Filtrar por Categoría</label>
+                        <select id="categoryFilter" class="modern-input">
+                            <option value="">Todas las Categorías</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['name']; ?>"><?php echo $category['name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
 
-
-        <!-- Selector de categoría -->
-        <div class="form-group mb-5">
-            <label for="categoryFilter">Filtrar por Categoría:</label>
-            <select id="categoryFilter" class="form-control">
-                <option value="">Todas las Categorías</option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?php echo $category['name']; ?>"><?php echo $category['name']; ?></option>
-                <?php endforeach; ?>
-            </select>
+                <div class="table-responsive">
+                    <table id="productTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Cod.</th>
+                                <th>Nombre</th>
+                                <th>Catg.</th>
+                                <th>Stock</th>
+                                <th>Costo</th>
+                                <th>Precio</th>
+                                <th>Vendidos</th>
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($products as $product): ?>
+                                <tr data-category="<?php echo $product['category_name']; ?>">
+                                    <td style="font-weight: 600; color: var(--text-muted);"><?php echo $product['cod']; ?></td>
+                                    <td style="font-weight: 600;"><?php echo $product['name']; ?></td>
+                                    <td><span class="badge" style="background: #f1f5f9; color: #475569;"><?php echo $product['category_name']; ?></span></td>
+                                    <td>
+                                        <?php 
+                                            $stock_class = $product['stock'] <= $product['low_stock_level'] ? 'bg-danger text-white' : 'bg-success text-white';
+                                        ?>
+                                        <span class="badge-stock <?php echo $stock_class; ?>"><?php echo $product['stock']; ?></span>
+                                    </td>
+                                    <td>$<?php echo number_format($product['cost'], 2); ?></td>
+                                    <td style="font-weight: 700; color: var(--primary);">$<?php echo number_format($product['price'], 2); ?></td>
+                                    <td><?php echo $soldMap[$product['id']] ?? 0; ?></td>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <a href="modifyProduct.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></a>
+                                            <button class="btn btn-sm btn-outline-success addStockBtn" data-id="<?php echo $product['id']; ?>" title="+ Stock"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+                                            <button class="btn btn-sm btn-outline-warning removeStockBtn" data-id="<?php echo $product['id']; ?>" title="- Stock"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+                                            <a href="../../backend/controllers/deleteProductHandler.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-danger deleteBtn" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <table id="productTable" class="table table-striped">
-        <thead>
-    <tr>
-        <th>ID</th>
-        <th style="max-width: 200px;">Nombre</th>
-        <th>Catg.</th>
-        <th>Stock</th>
-        <th>Alerta</th>
-        <th>Costo</th>
-        <th>Precio</th>
-        <th>Vendidos</th> <!-- Nueva columna -->
-        <th>Acciones</th>
-    </tr>
-</thead>
-<tbody>
-    <?php foreach ($products as $product): ?>
-        <tr data-category="<?php echo $product['category_name']; ?>">
-            <td class="text-center"><?php echo $product['cod']; ?></td>
-            <td class="text-center" style="max-width: 200px;"><?php echo $product['name']; ?></td>
-            <td class="text-center"><?php echo $product['category_name']; ?></td>
-            <td class="text-center"><?php echo $product['stock']; ?></td>
-            <td class="text-center"><?php echo $product['low_stock_level']; ?></td>
-            <td class="text-center">$<?php echo number_format($product['cost'], 2); ?></td>
-            <td class="text-center">$<?php echo number_format($product['price'], 2); ?></td>
-            <td class="text-center"><?php echo $soldMap[$product['id']] ?? 0; ?></td> <!-- Mostrar Vendidos -->
-            <td class="text-center" style="white-space: nowrap">
-                <a href="modifyProduct.php?id=<?php echo $product['id']; ?>" class="btn btn-primary btn-sm">Editar</a>
-                <a href="../../backend/controllers/deleteProductHandler.php?id=<?php echo $product['id']; ?>" class="btn btn-danger btn-sm deleteBtn">Eliminar</a>
-                <button class="btn btn-success btn-sm addStockBtn" data-id="<?php echo $product['id']; ?>" data-stock="<?php echo $product['stock']; ?>">+ Stock</button>
-                <button class="btn btn-secondary btn-sm removeStockBtn" data-id="<?php echo $product['id']; ?>" data-stock="<?php echo $product['stock']; ?>">- Stock</button>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-</tbody>
-        </table>
     </div>
 
     <!-- Modales para agregar y quitar stock -->
