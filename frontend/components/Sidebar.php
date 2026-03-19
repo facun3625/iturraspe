@@ -1,11 +1,24 @@
 <?php
-// Sidebar.php - Componente de navegación lateral moderno
+// Sidebar.php - Navegación lateral con acordeón
 $current_page = basename($_SERVER['PHP_SELF']);
+
+function is_active($pages) {
+    global $current_page;
+    if (is_array($pages)) {
+        return in_array($current_page, $pages) ? 'active' : '';
+    }
+    return $current_page == $pages ? 'active' : '';
+}
+
+function is_expanded($pages) {
+    global $current_page;
+    return in_array($current_page, $pages) ? 'expanded' : '';
+}
 ?>
 <aside class="modern-sidebar">
     <div class="sidebar-header">
         <div class="brand-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
         </div>
         <span class="brand-name">Iturraspe</span>
     </div>
@@ -13,38 +26,75 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <nav class="sidebar-nav">
         <div class="nav-section">
             <p class="section-title">Principal</p>
-            <a href="dashboard.php" class="nav-item <?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>">
+            <a href="dashboard.php" class="nav-item <?php echo is_active('dashboard.php'); ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="15" rx="1"/></svg>
                 <span>Dashboard</span>
             </a>
         </div>
 
         <div class="nav-section">
-            <p class="section-title">Gestión</p>
-            <a href="productList.php" class="nav-item <?php echo $current_page == 'productList.php' ? 'active' : ''; ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-                <span>Productos</span>
-            </a>
-            <a href="categoryList.php" class="nav-item <?php echo $current_page == 'categoryList.php' ? 'active' : ''; ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-                <span>Categorías</span>
-            </a>
-            <a href="clientList.php" class="nav-item <?php echo $current_page == 'clientList.php' ? 'active' : ''; ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Clientes</span>
-            </a>
-        </div>
+            <p class="section-title">Negocio</p>
+            
+            <!-- Productos Accordion -->
+            <?php $product_pages = ['productList.php', 'addProduct.php', 'uploadPrices.php', 'productListLowStock.php', 'productListHide.php', 'priceList.php', 'modifyProduct.php']; ?>
+            <div class="nav-group <?php echo is_expanded($product_pages); ?>">
+                <button class="nav-item group-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                    <span>Productos</span>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="nav-sub">
+                    <a href="productList.php" class="sub-item <?php echo is_active('productList.php'); ?>">Ver Todos</a>
+                    <a href="addProduct.php" class="sub-item <?php echo is_active('addProduct.php'); ?>">Agregar Nuevo</a>
+                    <a href="uploadPrices.php" class="sub-item <?php echo is_active('uploadPrices.php'); ?>">Actualizar Precios</a>
+                    <a href="productListLowStock.php" class="sub-item <?php echo is_active('productListLowStock.php'); ?>">Alertas Stock</a>
+                    <a href="productListHide.php" class="sub-item <?php echo is_active('productListHide.php'); ?>">Eliminados</a>
+                </div>
+            </div>
 
-        <div class="nav-section">
-            <p class="section-title">Operaciones</p>
-            <a href="salesList.php" class="nav-item <?php echo $current_page == 'salesList.php' ? 'active' : ''; ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                <span>Ventas</span>
-            </a>
-            <a href="statistics.php" class="nav-item <?php echo $current_page == 'statistics.php' ? 'active' : ''; ?>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-                <span>Estadísticas</span>
-            </a>
+            <!-- Categorías Accordion -->
+            <?php $cat_pages = ['categoryList.php', 'addCategory.php']; ?>
+            <div class="nav-group <?php echo is_expanded($cat_pages); ?>">
+                <button class="nav-item group-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+                    <span>Categorías</span>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="nav-sub">
+                    <a href="categoryList.php" class="sub-item <?php echo is_active('categoryList.php'); ?>">Ver Todas</a>
+                    <a href="addCategory.php" class="sub-item <?php echo is_active('addCategory.php'); ?>">Nueva Categoría</a>
+                </div>
+            </div>
+
+            <!-- Clientes Accordion -->
+            <?php $client_pages = ['clientList.php', 'addClient.php', 'clientListDeb.php', 'clientListHide.php']; ?>
+            <div class="nav-group <?php echo is_expanded($client_pages); ?>">
+                <button class="nav-item group-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Clientes</span>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="nav-sub">
+                    <a href="clientList.php" class="sub-item <?php echo is_active('clientList.php'); ?>">Ver Todos</a>
+                    <a href="addClient.php" class="sub-item <?php echo is_active('addClient.php'); ?>">Nuevo Cliente</a>
+                    <a href="clientListDeb.php" class="sub-item <?php echo is_active('clientListDeb.php'); ?>">Con Deuda</a>
+                </div>
+            </div>
+
+            <!-- Ventas Accordion -->
+            <?php $sale_pages = ['salesList.php', 'payments.php', 'productReport.php', 'statistics.php']; ?>
+            <div class="nav-group <?php echo is_expanded($sale_pages); ?>">
+                <button class="nav-item group-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                    <span>Operaciones</span>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="nav-sub">
+                    <a href="salesList.php" class="sub-item <?php echo is_active('salesList.php'); ?>">Ventas</a>
+                    <a href="payments.php" class="sub-item <?php echo is_active('payments.php'); ?>">Pagos</a>
+                    <a href="statistics.php" class="sub-item <?php echo is_active('statistics.php'); ?>">Estadísticas</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -55,6 +105,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
     </div>
 </aside>
+
+<script>
+document.querySelectorAll('.group-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+        const group = trigger.parentElement;
+        group.classList.toggle('expanded');
+    });
+});
+</script>
 
 <style>
 .modern-sidebar {
@@ -69,6 +128,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     flex-direction: column;
     z-index: 1000;
     transition: all 0.3s ease;
+    user-select: none;
 }
 
 .sidebar-header {
@@ -79,20 +139,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
 }
 
 .brand-icon {
-    width: 32px;
-    height: 32px;
-    background: #3b82f6;
-    border-radius: 0.5rem;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .brand-name {
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.025em;
+    color: #fff;
 }
 
 .sidebar-nav {
@@ -102,16 +164,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
 }
 
 .nav-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .section-title {
     padding-left: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.7rem;
+    font-weight: 700;
     text-transform: uppercase;
     color: #475569;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     margin-bottom: 0.75rem;
 }
 
@@ -121,17 +183,21 @@ $current_page = basename($_SERVER['PHP_SELF']);
     gap: 0.75rem;
     padding: 0.75rem;
     color: #94a3b8;
-    text-decoration: none;
-    border-radius: 0.5rem;
+    text-decoration: none !important;
+    border-radius: 0.75rem;
     transition: all 0.2s ease;
     font-weight: 500;
     margin-bottom: 0.25rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
 }
 
 .nav-item:hover {
     background: rgba(255, 255, 255, 0.05);
     color: #f8fafc;
-    text-decoration: none;
 }
 
 .nav-item.active {
@@ -139,8 +205,52 @@ $current_page = basename($_SERVER['PHP_SELF']);
     color: white;
 }
 
+.nav-group .chevron {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    opacity: 0.5;
+}
+
+.nav-group.expanded .chevron {
+    transform: rotate(180deg);
+}
+
+.nav-sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding-left: 2.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-group.expanded .nav-sub {
+    max-height: 500px;
+    margin-bottom: 0.75rem;
+}
+
+.sub-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    text-decoration: none !important;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.125rem;
+}
+
+.sub-item:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.sub-item.active {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
 .sidebar-footer {
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -150,8 +260,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     gap: 0.75rem;
     padding: 0.75rem;
     color: #ef4444;
-    text-decoration: none;
-    border-radius: 0.5rem;
+    text-decoration: none !important;
+    border-radius: 0.75rem;
     transition: all 0.2s ease;
     font-weight: 500;
 }
@@ -159,6 +269,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
 .logout-btn:hover {
     background: rgba(239, 68, 68, 0.1);
     color: #ef4444;
-    text-decoration: none;
+}
+
+/* Scrollbar styling */
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
 }
 </style>
