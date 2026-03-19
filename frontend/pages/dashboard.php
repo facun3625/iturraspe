@@ -62,11 +62,6 @@ session_start();
         <?php include_once '../components/Sidebar.php'; ?>
         
         <div class="content-area">
-            <?php 
-                $page_title = "Panel de Control";
-                include_once '../components/Header.php'; 
-            ?>
-
             <div class="container-fluid mt-4">
                 <div class="glass-card mb-4" style="background: white; border: none;">
                     <h2 style="font-weight: 700; color: var(--text-main);">Hola, <?php echo $_SESSION['username']; ?> 👋</h2>
