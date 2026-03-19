@@ -1,0 +1,6 @@
+next-app/
+.DS_Store
+.env
+iturraspe-db-data/
+*.log
+docker-compose.override.yml

@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: iturraspe-db-legacy
+    restart: always
+    environment:
+      MYSQL_DATABASE: distji_s
+      MYSQL_USER: distji_s
+      MYSQL_PASSWORD: "J*OqzaQ4fW"
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3307:3306" # Usamos 3307 para no chocar con el otro contenedor si sigue prendido
+    volumes:
+      - db_data_legacy:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: iturraspe-php-app
+    ports:
+      - "8085:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: distji_s
+      DATABASE_USER: distji_s
+      DATABASE_PASS: "J*OqzaQ4fW"
+
+volumes:
+  db_data_legacy:
+    external: true
+    name: next-app_db_data
