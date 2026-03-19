@@ -162,12 +162,36 @@ foreach ($soldQuantities as $sold) {
     </div>
 
     <!-- Modales para agregar y quitar stock -->
-     <!-- Modal para Agregar Stock -->
-    <div class="modal fade" id="addStockModal" tabindex="-1" aria-labelledby="addStockModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modales Modernizados -->
+    <style>
+        .modern-modal .modal-content {
+            border-radius: 1.5rem;
+            border: none;
+            box-shadow: var(--shadow-strong);
+            padding: 1rem;
+        }
+        .modern-modal .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .modern-modal .modal-title {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.5rem;
+        }
+        .modern-modal .modal-footer {
+            border-top: none;
+            padding-top: 0;
+            gap: 0.75rem;
+        }
+    </style>
+
+    <!-- Modal para Agregar Stock -->
+    <div class="modal fade modern-modal" id="addStockModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addStockModalLabel">Agregar Stock</h5>
+                    <h5 class="modal-title">Agregar Stock</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -176,13 +200,13 @@ foreach ($soldQuantities as $sold) {
                     <div class="modal-body">
                         <input type="hidden" name="id" id="addStockProductId">
                         <div class="form-group">
-                            <label for="addStockAmount">Cantidad a Agregar</label>
-                            <input type="number" class="form-control" id="addStockAmount" name="amount" required>
+                            <label class="modern-label">Cantidad a Agregar</label>
+                            <input type="number" class="modern-input" id="addStockAmount" name="amount" placeholder="Ej: 10" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="modern-btn" style="background: #f1f5f9; color: #475569;" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="modern-btn modern-btn-primary">Actualizar Stock</button>
                     </div>
                 </form>
             </div>
@@ -190,11 +214,11 @@ foreach ($soldQuantities as $sold) {
     </div>
 
     <!-- Modal para Quitar Stock -->
-    <div class="modal fade" id="removeStockModal" tabindex="-1" aria-labelledby="removeStockModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade modern-modal" id="removeStockModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="removeStockModalLabel">Quitar Stock</h5>
+                    <h5 class="modal-title">Quitar Stock</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -203,13 +227,13 @@ foreach ($soldQuantities as $sold) {
                     <div class="modal-body">
                         <input type="hidden" name="id" id="removeStockProductId">
                         <div class="form-group">
-                            <label for="removeStockAmount">Cantidad a Quitar</label>
-                            <input type="number" class="form-control" id="removeStockAmount" name="amount" required>
+                            <label class="modern-label">Cantidad a Quitar</label>
+                            <input type="number" class="modern-input" id="removeStockAmount" name="amount" placeholder="Ej: 5" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Quitar</button>
+                        <button type="button" class="modern-btn" style="background: #f1f5f9; color: #475569;" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="modern-btn modern-btn-primary" style="background: #ef4444;">Confirmar Retiro</button>
                     </div>
                 </form>
             </div>
