@@ -63,11 +63,6 @@ session_start();
         
         <div class="content-area">
             <div class="container-fluid mt-4">
-                <div class="glass-card mb-4" style="background: white; border: none;">
-                    <h2 style="font-weight: 700; color: var(--text-main);">Hola, <?php echo $_SESSION['username']; ?> 👋</h2>
-                    <p style="color: var(--text-muted); margin: 0;">Aquí tienes un resumen de la gestión de tu distribuidora.</p>
-                </div>
-
                 <div class="grid-dashboard">
                     <!-- Productos -->
                     <div class="stat-card">
