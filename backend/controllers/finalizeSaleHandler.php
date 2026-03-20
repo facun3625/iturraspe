@@ -30,7 +30,8 @@ try {
     
     // 2. Insertar cada detalle de venta y actualizar el stock
     foreach ($items as $item) {
-        $saleModel->addSaleDetail($sale_id, $item['id'], $item['quantity'], $item['price']);
+        $discount = $item['discount'] ?? 0;
+        $saleModel->addSaleDetail($sale_id, $item['id'], $item['quantity'], $item['price'], $discount);
         $saleModel->updateProductStock($item['id'], $item['quantity']);
     }
 

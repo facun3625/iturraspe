@@ -1,0 +1,43 @@
+/* Estilo para el contenedor redondeado */
+.rounded-container {
+    background-color: #fff; /* Fondo suave para contraste */
+    border-radius: 15px; /* Borde redondeado */
+    border: 1px solid #F2F2F2;
+    
+    
+}
+
+.rounded-container-table {
+    background-color: #fff; /* Fondo suave para contraste */
+    border-radius: 15px; /* Borde redondeado */
+    border: 1px solid #F2F2F2; /* Borde ligero */
+    max-width: 1300px; /* Ancho máximo */
+    margin: 20px auto 40px auto; /* Margen superior de 20px, inferior de 30px, centrado horizontalmente */
+    padding: 30px; /* Padding interno */
+}
+.rounded-container-form-2 {
+    background-color: #fff; /* Fondo suave para contraste */
+    border-radius: 15px; /* Borde redondeado */
+    border: 1px solid #F2F2F2; /* Borde ligero */
+    max-width: 800px; /* Ancho máximo */
+    margin: 20px auto 0 auto; /* Margen superior de 20px, centrado horizontalmente */
+    padding: 30px; /* Padding interno */
+}
+.rounded-container-form {
+    background-color: #fff; /* Fondo suave para contraste */
+    border-radius: 15px; /* Borde redondeado */
+    border: 1px solid #F2F2F2; /* Borde ligero */
+    max-width: 500px; /* Ancho máximo */
+    margin: 20px auto 0 auto; /* Margen superior de 20px, centrado horizontalmente */
+    padding: 30px; /* Padding interno */
+}
+.login{
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    margin: auto;
+}

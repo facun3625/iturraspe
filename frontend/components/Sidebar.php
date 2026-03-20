@@ -82,7 +82,7 @@ function is_expanded($pages) {
             </div>
 
             <!-- Ventas Accordion -->
-            <?php $sale_pages = ['salesList.php', 'payments.php', 'productReport.php', 'statistics.php']; ?>
+            <?php $sale_pages = ['salesList.php', 'payments.php', 'productReport.php', 'statistics.php', 'operatingCosts.php']; ?>
             <div class="nav-group <?php echo is_expanded($sale_pages); ?>">
                 <button class="nav-item group-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
@@ -92,6 +92,7 @@ function is_expanded($pages) {
                 <div class="nav-sub">
                     <a href="salesList.php" class="sub-item <?php echo is_active('salesList.php'); ?>">Ventas</a>
                     <a href="payments.php" class="sub-item <?php echo is_active('payments.php'); ?>">Pagos</a>
+                    <a href="operatingCosts.php" class="sub-item <?php echo is_active('operatingCosts.php'); ?>">Costos Operativos</a>
                     <a href="statistics.php" class="sub-item <?php echo is_active('statistics.php'); ?>">Estadísticas</a>
                 </div>
             </div>
@@ -99,11 +100,12 @@ function is_expanded($pages) {
     </nav>
 
     <div class="sidebar-footer">
-        <a href="../../backend/controllers/logout.php" class="logout-btn">
+        <a href="logout.php" class="logout-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
             <span>Cerrar Sesión</span>
         </a>
     </div>
+
 </aside>
 
 <script>
@@ -251,7 +253,6 @@ document.querySelectorAll('.group-trigger').forEach(trigger => {
 
 .sidebar-footer {
     padding: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .logout-btn {

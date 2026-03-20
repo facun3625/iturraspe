@@ -64,9 +64,9 @@ class SaleController {
 
     public function getSaleDetails($sale_id) {
         $query = "
-            SELECT s.id AS sale_id, s.sale_date, s.total AS sale_total, s.amount_paid,
+            SELECT s.id AS sale_id, s.sale_date, s.total AS sale_total, s.amount_paid, s.client_id,
                    c.name AS client_name, 
-                   p.id AS product_id, p.name AS product_name, si.quantity, si.price 
+                   p.id AS product_id, p.name AS product_name, si.quantity, si.price, si.discount 
             FROM sales s
             JOIN clients c ON s.client_id = c.id
             JOIN sale_details si ON s.id = si.sale_id
@@ -82,12 +82,13 @@ class SaleController {
             return null;
         }
     
-        // Organizar los detalles incluyendo amount_paid
+        // Organizar los detalles incluyendo amount_paid y client_id
         $saleDetails = [
             'sale_id'    => $saleData[0]['sale_id'],
             'sale_date'  => $saleData[0]['sale_date'],
             'sale_total' => $saleData[0]['sale_total'],
             'amount_paid'=> $saleData[0]['amount_paid'],
+            'client_id'  => $saleData[0]['client_id'],
             'client_name'=> $saleData[0]['client_name'],
             'items'      => []
         ];
@@ -97,7 +98,8 @@ class SaleController {
                 'product_id'   => $row['product_id'],
                 'product_name' => $row['product_name'],
                 'quantity'     => $row['quantity'],
-                'price'        => $row['price']
+                'price'        => $row['price'],
+                'discount'     => $row['discount']
             ];
         }
     
@@ -172,24 +174,24 @@ class SaleController {
     // Obtener los meses en los que hubo ventas
     public function getMonthsWithSales() {
         return [
-            1  => 'Enero',
-            2  => 'Febrero',
-            3  => 'Marzo',
-            4  => 'Abril',
-            5  => 'Mayo',
-            6  => 'Junio',
-            7  => 'Julio',
-            8  => 'Agosto',
-            9  => 'Septiembre',
-            10 => 'Octubre',
-            11 => 'Noviembre',
-            12 => 'Diciembre',
+            '01' => 'Enero',
+            '02' => 'Febrero',
+            '03' => 'Marzo',
+            '04' => 'Abril',
+            '05' => 'Mayo',
+            '06' => 'Junio',
+            '07' => 'Julio',
+            '08' => 'Agosto',
+            '09' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre',
         ];
     }
 
     // Obtener ventas filtradas por año y mes
     public function getSalesByYearAndMonth($year, $month = null) {
-        if ($month) {
+        if ($month && $month != '') {
             $query = "SELECT DAY(sale_date) AS day, SUM(total) AS total_sales 
                       FROM sales 
                       WHERE YEAR(sale_date) = :year AND MONTH(sale_date) = :month
@@ -211,7 +213,7 @@ class SaleController {
 
         $sales = [];
         foreach ($results as $row) {
-            $key = $month ? $row['day'] : $row['month'];
+            $key = ($month && $month != '') ? $row['day'] : $row['month'];
             $sales[$key] = $row['total_sales'];
         }
 
@@ -220,7 +222,7 @@ class SaleController {
 
     // Obtener el total de ventas por año y mes
     public function getTotalSalesByYearAndMonth($year, $month = null) {
-        if ($month) {
+        if ($month && $month != '') {
             $query = "SELECT SUM(total) AS total_sales FROM sales WHERE YEAR(sale_date) = ? AND MONTH(sale_date) = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([$year, $month]);
@@ -279,7 +281,7 @@ class SaleController {
             $stmtDelete->execute();
 
             // Inserta los nuevos detalles
-            $queryInsert = "INSERT INTO sale_details (sale_id, product_id, quantity, price) VALUES (:sale_id, :product_id, :quantity, :price)";
+            $queryInsert = "INSERT INTO sale_details (sale_id, product_id, quantity, price, discount) VALUES (:sale_id, :product_id, :quantity, :price, :discount)";
             $stmtInsert  = $this->conn->prepare($queryInsert);
 
             foreach ($data['items'] as $item) {
@@ -287,6 +289,7 @@ class SaleController {
                 $stmtInsert->bindParam(':product_id', $item['product_id'], PDO::PARAM_INT);
                 $stmtInsert->bindParam(':quantity',   $item['quantity'],   PDO::PARAM_INT);
                 $stmtInsert->bindParam(':price',      $item['price']);
+                $stmtInsert->bindParam(':discount',   $item['discount']);
                 $stmtInsert->execute();
             }
 
@@ -300,4 +303,52 @@ class SaleController {
         }
     }
 
+    public function getMonthlyProfitSummary($year, $month = null) {
+        $where = "YEAR(s.sale_date) = :year";
+        if ($month && $month != '') {
+            $where .= " AND MONTH(s.sale_date) = :month";
+        }
+
+        // Ingresos y Costo de lo Vendido
+        $query = "
+            SELECT 
+                SUM(sd.price * sd.quantity) AS total_revenue,
+                SUM(p.cost * sd.quantity) AS total_cogs
+            FROM sale_details sd
+            JOIN sales s ON sd.sale_id = s.id
+            JOIN products p ON sd.product_id = p.id
+            WHERE $where
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+        if ($month && $month != '') {
+            $stmt->bindParam(':month', $month, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $salesData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $whereCosts = "YEAR(date) = :year";
+        if ($month && $month != '') {
+            $whereCosts .= " AND MONTH(date) = :month";
+        }
+        // Gastos Operativos (desde operating_costs)
+        $queryCosts = "
+            SELECT SUM(amount) AS total_op_costs
+            FROM operating_costs
+            WHERE $whereCosts
+        ";
+        $stmtCosts = $this->conn->prepare($queryCosts);
+        $stmtCosts->bindParam(':year', $year, PDO::PARAM_INT);
+        if ($month && $month != '') {
+            $stmtCosts->bindParam(':month', $month, PDO::PARAM_INT);
+        }
+        $stmtCosts->execute();
+        $costsData = $stmtCosts->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'revenue' => $salesData['total_revenue'] ?? 0,
+            'cogs' => $salesData['total_cogs'] ?? 0,
+            'operating_costs' => $costsData['total_op_costs'] ?? 0
+        ];
+    }
 }
