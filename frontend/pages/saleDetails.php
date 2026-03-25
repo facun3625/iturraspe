@@ -41,11 +41,8 @@ $totalDebt = $saleDetails['sale_total'] - $totalPaid; // Diferencia para obtener
     <title>Detalle de Venta #<?php echo $sale_id; ?> | Julio Iturraspe</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     <style>
-        .main-layout { display: flex; min-height: 100vh; }
-        .content-area { flex: 1; margin-left: 260px; padding: 2.5rem; background-color: #f8fafc; }
-        
         .receipt-card { background: white; border-radius: 1.5rem; box-shadow: var(--shadow-soft); overflow: hidden; max-width: 900px; margin: 0 auto; border: 1px solid #f1f5f9; }
         .receipt-header { background: #f8fafc; padding: 2rem; border-bottom: 2px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
         .receipt-body { padding: 2.5rem; }
@@ -62,9 +59,8 @@ $totalDebt = $saleDetails['sale_total'] - $totalPaid; // Diferencia para obtener
         .summary-value { font-weight: 700; color: var(--text-main); }
         
         .badge-discount { background: #f0fdf4; color: #166534; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.7rem; font-weight: 700; }
-        
-        @media (max-width: 1200px) { .content-area { margin-left: 0; padding: 1.5rem; } }
     </style>
+le>
 </head>
 <body class="bg-main">
     <div class="main-layout">

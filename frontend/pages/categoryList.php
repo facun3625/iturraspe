@@ -33,20 +33,7 @@ try {
     <title>Categorías | Julio Iturraspe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
-    <style>
-        .main-layout { display: flex; min-height: 100vh; }
-        .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
-        .table-card { background: white; border-radius: 1rem; padding: 2rem; border: none; box-shadow: var(--shadow-soft); }
-        table.dataTable { border-collapse: separate !important; border-spacing: 0 0.5rem !important; }
-        table.dataTable tbody tr { background-color: #fff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 0.5rem; transition: transform 0.2s; }
-        table.dataTable tbody tr:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.07); }
-        table.dataTable tbody td { border: none !important; padding: 1rem !important; vertical-align: middle !important; }
-        table.dataTable thead th { border-bottom: 2px solid #f1f5f9 !important; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
-        .count-badge { background: #eff6ff; color: #1e40af; padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.875rem; }
-        .porcentaje-badge { background: #f0fdf4; color: #166534; padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 700; }
-        .action-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; transition: all 0.2s; border: none; }
-        @media (max-width: 992px) { .content-area { margin-left: 0; } }
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     </style>
 </head>
 <body class="bg-main">

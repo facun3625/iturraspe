@@ -59,7 +59,7 @@ foreach ($soldQuantities as $sold) {
     <title>Lista de Productos | Julio Iturraspe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     <style>
         .main-layout { display: flex; min-height: 100vh; }
         .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
@@ -75,7 +75,6 @@ foreach ($soldQuantities as $sold) {
         table.dataTable tbody td { border: none !important; padding: 1rem !important; vertical-align: middle !important; }
         table.dataTable thead th { border-bottom: 2px solid #f1f5f9 !important; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
         .badge-stock { padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.75rem; }
-        @media (max-width: 992px) { .content-area { margin-left: 0; } }
     </style>
 </head>
 <body class="bg-main">

@@ -37,4 +37,24 @@ class AuthController {
     public function isLoggedIn() {
         return isset($_SESSION['username']);
     }
+
+    public function updatePassword($username, $newPassword) {
+        $query = "UPDATE users SET password = MD5(:password) WHERE username = :username";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':password', $newPassword);
+        $stmt->bindParam(':username', $username);
+        return $stmt->execute();
+    }
+
+    public function createUser($username, $password) {
+        $query = "INSERT INTO users (username, password) VALUES (:username, MD5(:password))";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

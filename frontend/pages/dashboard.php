@@ -8,33 +8,25 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Julio Iturraspe</title>
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     <style>
-        .main-layout { display: flex; min-height: 100vh; }
-        .content-area { 
-            flex: 1; 
-            margin-left: 260px; 
-            padding: 3rem; 
-            background: #f1f5f9;
-            min-width: 0;
-        }
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem; /* Increased gap to prevent cards from being 'pegados' */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
             width: 100%;
         }
         .card-modern {
             background: #ffffff;
             border-radius: 1.5rem;
-            padding: 2.5rem; /* Increased padding */
+            padding: 2.25rem 2.25rem 3.5rem; /* Extra bottom padding */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
             border: 1px solid rgba(226, 232, 240, 0.8);
             width: 100%;
-            overflow: hidden;
+            min-height: 480px; /* Force enough height */
             box-sizing: border-box;
         }
         .card-modern:hover {
@@ -80,8 +72,8 @@ session_start();
             background: #f8fafc;
             color: #475569;
             border: 1px solid #e2e8f0;
-            font-size: 0.8rem;
-            padding: 0.75rem;
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
             border-radius: 0.75rem;
             text-align: center;
             font-weight: 600;
@@ -94,14 +86,6 @@ session_start();
             border-color: #cbd5e1;
             color: #1e293b;
         }
-        .header-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #0f172a;
-            margin-bottom: 3rem;
-            letter-spacing: -0.05em;
-        }
-        @media (max-width: 992px) { .content-area { margin-left: 0; padding: 1.5rem; } }
     </style>
 </head>
 <body class="bg-main">

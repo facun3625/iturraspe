@@ -80,11 +80,9 @@ if ($selectedYear) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas | Julio Iturraspe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .main-layout { display: flex; min-height: 100vh; }
-        .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
         .stat-card { background: white; border-radius: 1.25rem; padding: 1.5rem; position: relative; overflow: hidden; border: none; box-shadow: var(--shadow-soft); transition: transform 0.3s; }
         .stat-card:hover { transform: translateY(-5px); }
@@ -99,8 +97,6 @@ if ($selectedYear) {
         .card-debt .stat-icon { background: #fee2e2; color: #dc2626; }
         .card-stock .stat-icon { background: #e0f2fe; color: #0284c7; }
         .card-sales .stat-icon { background: #f0fdf4; color: #16a34a; }
-        
-        @media (max-width: 992px) { .content-area { margin-left: 0; } }
     </style>
 </head>
 <body class="bg-main">

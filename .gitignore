@@ -4,3 +4,5 @@ next-app/
 iturraspe-db-data/
 *.log
 docker-compose.override.yml
+database.db
+*.sql

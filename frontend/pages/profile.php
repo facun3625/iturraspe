@@ -53,22 +53,16 @@ if (isset($_POST['create_user'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil | Julio Iturraspe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
-    <style>
-        .main-layout { display: flex; min-height: 100vh; }
-        .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
-        .profile-card { background: white; border-radius: 1.25rem; padding: 2rem; border: none; box-shadow: var(--shadow-soft); max-width: 600px; margin-bottom: 2rem; }
-        @media (max-width: 992px) { .content-area { margin-left: 0; } }
-    </style>
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
 </head>
 <body class="bg-main">
     <div class="main-layout">
         <?php include_once '../components/Sidebar.php'; ?>
         
         <div class="content-area">
-            <header class="mb-5">
-                <h1 style="font-weight: 800; color: var(--text-main); letter-spacing: -0.025em;">Mi Perfil</h1>
-                <p style="color: var(--text-muted); font-size: 1.1rem;">Gestioná tus credenciales y usuarios del sistema.</p>
+            <header>
+                <h1 class="header-title">Mi Perfil</h1>
+                <p class="header-subtitle">Gestioná tus credenciales y usuarios del sistema.</p>
             </header>
 
             <?php if ($message): ?>
@@ -80,7 +74,7 @@ if (isset($_POST['create_user'])) {
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="profile-card">
+                    <div class="modern-card profile-card">
                         <h4 class="mb-4" style="font-weight: 700; color: var(--text-main);">Cambiar mi Contraseña</h4>
                         <form method="POST">
                             <div class="form-group">
@@ -99,7 +93,7 @@ if (isset($_POST['create_user'])) {
                         </form>
                     </div>
 
-                    <div class="profile-card">
+                    <div class="modern-card profile-card">
                         <h4 class="mb-4" style="font-weight: 700; color: var(--text-main);">Crear Nuevo Usuario</h4>
                         <form method="POST">
                             <div class="form-group">

@@ -39,7 +39,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <title>Clientes | Julio Iturraspe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../assets/css/modern-system.css">
+    <link rel="stylesheet" href="../assets/css/modern-system.css?v=1.1">
     <style>
         .main-layout { display: flex; min-height: 100vh; }
         .content-area { flex: 1; margin-left: 260px; padding: 2rem; background-color: #f8fafc; }
@@ -53,7 +53,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         .debt-badge { background: #fee2e2; color: #991b1b; padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 700; }
         .purchase-badge { background: #f1f5f9; color: #475569; padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-weight: 600; }
         .action-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; transition: all 0.2s; border: none; }
-        @media (max-width: 992px) { .content-area { margin-left: 0; } }
     </style>
 </head>
 <body class="bg-main">

@@ -43,14 +43,14 @@ class SaleController {
     $query = "
         SELECT 
             p.name AS product_name,
-            sd.price AS price_unit,
+            (SUM(sd.quantity * sd.price) / SUM(sd.quantity)) AS price_unit,
             SUM(sd.quantity) AS total_quantity,
             SUM(sd.quantity * sd.price) AS total_amount
         FROM sale_details sd
         INNER JOIN products p ON sd.product_id = p.id
         INNER JOIN sales s ON sd.sale_id = s.id
         WHERE s.sale_date BETWEEN :start_date AND :end_date
-        GROUP BY p.id, sd.price
+        GROUP BY p.id
         ORDER BY p.name ASC
     ";
 
