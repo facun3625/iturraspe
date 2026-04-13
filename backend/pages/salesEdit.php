@@ -214,7 +214,7 @@ $saleItems = $saleDetails['items'];
                             <div class="d-flex align-items-center gap-2">
                                 <div style="display: flex; flex-direction: column;">
                                     <label style="font-size: 0.65rem; color: #64748b; font-weight: 700; margin-bottom: 2px;">CANT.</label>
-                                    <input type="number" min="1" value="${product.quantity}" 
+                                    <input type="number" min="-9999" value="${product.quantity}" 
                                            oninput="updateQuantity(${index}, this.value)" 
                                            style="width: 55px; height: 32px; border-radius: 0.5rem; border: 1px solid #cbd5e1; padding: 0 0.5rem; font-weight: 600; font-size: 0.85rem;">
                                 </div>
@@ -226,8 +226,8 @@ $saleItems = $saleDetails['items'];
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span style="display: block; font-size: 0.75rem; color: #94a3b8; text-decoration: ${product.discount > 0 ? 'line-through' : 'none'};">$${product.price.toFixed(2)}</span>
-                                <span style="font-weight: 800; color: var(--text-main); font-size: 1.05rem;">$${product.subtotal.toFixed(2)}</span>
+                                <span id="origPrice-${index}" style="display: block; font-size: 0.75rem; color: #94a3b8; text-decoration: ${product.discount > 0 ? 'line-through' : 'none'};">$${product.price.toFixed(2)}</span>
+                                <span style="font-weight: 800; color: var(--text-main); font-size: 1.05rem;">$<span id="subtotal-${index}">${product.subtotal.toFixed(2)}</span></span>
                             </div>
                         </div>
                     </div>
@@ -239,11 +239,14 @@ $saleItems = $saleDetails['items'];
         }
 
         function updateQuantity(index, quantity) {
-            let val = parseInt(quantity) || 1;
-            if (val < 1) val = 1;
+            let val = parseInt(quantity);
+            if (isNaN(val)) return; 
             selectedProducts[index].quantity = val;
             recalculateItem(selectedProducts[index]);
-            updateCart();
+            
+            // Actualizar solo el subtotal y el total
+            document.getElementById(`subtotal-${index}`).innerText = selectedProducts[index].subtotal.toFixed(2);
+            calculateTotalSale();
         }
 
         function updateDiscount(index, discount) {
@@ -252,7 +255,11 @@ $saleItems = $saleDetails['items'];
             if (val < 0) val = 0;
             selectedProducts[index].discount = val;
             recalculateItem(selectedProducts[index]);
-            updateCart();
+            
+            // Actualizar subtotal, el tachado del precio original y el total
+            document.getElementById(`subtotal-${index}`).innerText = selectedProducts[index].subtotal.toFixed(2);
+            document.getElementById(`origPrice-${index}`).style.textDecoration = val > 0 ? 'line-through' : 'none';
+            calculateTotalSale();
         }
 
         function calculateTotalSale() {

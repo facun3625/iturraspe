@@ -66,7 +66,7 @@ class SaleController {
         $query = "
             SELECT s.id AS sale_id, s.sale_date, s.total AS sale_total, s.amount_paid, s.client_id,
                    c.name AS client_name, 
-                   p.id AS product_id, p.name AS product_name, si.quantity, si.price, si.discount 
+                   p.id AS product_id, p.cod AS product_cod, p.name AS product_name, si.quantity, si.price, si.discount
             FROM sales s
             JOIN clients c ON s.client_id = c.id
             JOIN sale_details si ON s.id = si.sale_id
@@ -96,6 +96,7 @@ class SaleController {
         foreach ($saleData as $row) {
             $saleDetails['items'][] = [
                 'product_id'   => $row['product_id'],
+                'product_cod'  => $row['product_cod'],
                 'product_name' => $row['product_name'],
                 'quantity'     => $row['quantity'],
                 'price'        => $row['price'],

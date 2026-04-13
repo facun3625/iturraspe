@@ -77,7 +77,7 @@ $payments = $paymentController->getAllPayments();
                                     <td class="text-center">
                                         <span class="amount-badge">$<?php echo number_format($payment['payment_amount'], 2); ?></span>
                                     </td>
-                                    <td class="text-right date-text">
+                                    <td class="text-right date-text" data-order="<?php echo $payment['payment_date']; ?>">
                                         <?php echo date('d/m/Y H:i', strtotime($payment['payment_date'])); ?>
                                     </td>
                                 </tr>

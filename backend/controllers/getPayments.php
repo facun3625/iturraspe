@@ -29,6 +29,7 @@ class PaymentController {
     FROM payments p
     JOIN sales s ON p.sale_id = s.id
     JOIN clients c ON s.client_id = c.id
+    ORDER BY p.payment_date DESC
 ";
 
 

@@ -103,6 +103,7 @@ le>
                         <table class="table table-borderless">
                             <thead>
                                 <tr style="border-bottom: 2px solid #f1f5f9;">
+                                    <th style="color: #64748b; font-size: 0.75rem; font-weight: 700;">COD.</th>
                                     <th style="color: #64748b; font-size: 0.75rem; font-weight: 700;">PRODUCTO</th>
                                     <th class="text-center" style="color: #64748b; font-size: 0.75rem; font-weight: 700;">CANT.</th>
                                     <th class="text-right" style="color: #64748b; font-size: 0.75rem; font-weight: 700;">P. LISTA</th>
@@ -118,6 +119,7 @@ le>
                                     $subtotal = $item['quantity'] * $finalPrice;
                                 ?>
                                     <tr class="item-row">
+                                        <td style="font-weight: 600; color: var(--text-muted); white-space: nowrap;"><?php echo htmlspecialchars($item['product_cod']); ?></td>
                                         <td>
                                             <span style="display: block; font-weight: 700; color: var(--text-main);"><?php echo htmlspecialchars($item['product_name']); ?></span>
                                         </td>
@@ -186,12 +188,13 @@ le>
             doc.text(`Cliente: <?php echo $saleDetails['client_name']; ?>`, 14, 48);
 
             // Table
-            const tableColumns = ['Producto', 'Cant.', 'P. Lista', 'Desc.', 'Subtotal'];
+            const tableColumns = ['Cod.', 'Producto', 'Cant.', 'P. Lista', 'Desc.', 'Subtotal'];
             const tableRows = <?php echo json_encode(array_map(function($item) {
                 $discount = floatval($item['discount'] ?? 0);
                 $finalPrice = floatval($item['price']);
                 $originalPrice = ($discount < 100) ? ($finalPrice / (1 - ($discount / 100))) : $finalPrice;
                 return [
+                    $item['product_cod'],
                     $item['product_name'],
                     $item['quantity'],
                     '$' . number_format($originalPrice, 2),
@@ -207,10 +210,11 @@ le>
                 theme: 'grid',
                 headStyles: { fillColor: [59, 130, 246] },
                 columnStyles: {
-                    1: { halign: 'center' },
-                    2: { halign: 'right' },
-                    3: { halign: 'center' },
-                    4: { halign: 'right' }
+                    0: { halign: 'center' },
+                    2: { halign: 'center' },
+                    3: { halign: 'right' },
+                    4: { halign: 'center' },
+                    5: { halign: 'right' }
                 }
             });
 

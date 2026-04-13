@@ -235,6 +235,9 @@ try {
         </div>
     </div>
 
+    <script>
+        const productsData = <?php echo json_encode($products); ?>;
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -255,18 +258,25 @@ try {
     });
 
     function exportTableToCSV(filename) {
-        var csv = [];
-        var rows = document.querySelectorAll("#priceTable tr");
-        for (var i = 0; i < rows.length; i++) {
-            var row = [], cols = rows[i].querySelectorAll("td, th");
-            for (var j = 0; j < cols.length; j++) {
-                var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/"/g, '""');
-                row.push('"' + data + '"');
-            }
+        let csv = [];
+        // Header
+        csv.push(["Cód.", "Producto", "Categoría", "Precio", "Imagen"].join(","));
+        
+        // Data
+        productsData.forEach(p => {
+            const price = parseFloat(p.price).toFixed(2).replace('.', ',');
+            const row = [
+                `"${p.id}"`,
+                `"${p.name.replace(/"/g, '""')}"`,
+                `"${p.category_name.replace(/"/g, '""')}"`,
+                `"${price}"`,
+                `""`
+            ];
             csv.push(row.join(","));
-        }
-        var csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-        var downloadLink = document.createElement("a");
+        });
+
+        const csvFile = new Blob(["\ufeff" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+        const downloadLink = document.createElement("a");
         downloadLink.download = filename;
         downloadLink.href = window.URL.createObjectURL(csvFile);
         downloadLink.style.display = "none";
@@ -275,8 +285,28 @@ try {
     }
 
     function exportTableToExcelJS(filename = 'lista_de_precios.xlsx'){
-        var table = document.getElementById("priceTable");
-        var workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        const data = productsData.map(p => ({
+            "Cód.": p.id,
+            "Producto": p.name,
+            "Categoría": p.category_name,
+            "Precio": parseFloat(p.price),
+            "Imagen": ""
+        }));
+        
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        
+        // Formatear la columna de precio como moneda/número con 2 decimales
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+            const cell = worksheet[XLSX.utils.encode_cell({r: R, c: 3})]; // Columna D (Precio)
+            if (cell) {
+                cell.t = 'n';
+                cell.z = '#,##0.00';
+            }
+        }
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Lista de Precios");
         XLSX.writeFile(workbook, filename);
     }
 

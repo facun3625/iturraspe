@@ -272,23 +272,25 @@ foreach ($soldQuantities as $sold) {
             $('#categoryFilter').on('change', function() {
                 const category = $(this).val();
                 if (category) {
-                    table.column(2).search('^' + category + '$', true, false).draw(); // Filtra la columna de categoría
+                    // Escapamos caracteres especiales para el regex y usamos búsqueda exacta por columna
+                    const escapedCategory = $.fn.dataTable.util.escapeRegex(category);
+                    table.column(2).search('^' + escapedCategory + '$', true, false).draw();
                 } else {
-                    table.column(2).search('').draw(); // Muestra todas las categorías si no hay filtro
+                    table.column(2).search('').draw();
                 }
             });
 
             // Agregar Stock
-            $('.addStockBtn').on('click', function() {
+            $('#productTable').on('click', '.addStockBtn', function() {
                 $('#addStockProductId').val($(this).data('id'));
-                $('#addStockAmount').val(''); // Limpiar campo de cantidad
+                $('#addStockAmount').val('');
                 $('#addStockModal').modal('show');
             });
 
             // Quitar Stock
-            $('.removeStockBtn').on('click', function() {
+            $('#productTable').on('click', '.removeStockBtn', function() {
                 $('#removeStockProductId').val($(this).data('id'));
-                $('#removeStockAmount').val(''); // Limpiar campo de cantidad
+                $('#removeStockAmount').val('');
                 $('#removeStockModal').modal('show');
             });
         });
@@ -330,17 +332,4 @@ foreach ($soldQuantities as $sold) {
 </script>
 </body>
 </html>
-<?php
-// Ruta: control_stock/frontend/pages/productList.php
-
-require_once '../../backend/controllers/productController.php';
-$productController = new ProductController();
-
-try {
-    $products = $productController->getProductsWithCategory();
-} catch (Exception $e) {
-    $products = [];
-    $error = "Error al cargar los productos: " . $e->getMessage();
-}
-?>
 
